@@ -8,7 +8,15 @@ const generateToken = (id, role) =>
 // POST /api/auth/register
 const register = async (req, res) => {
   try {
-    const { name, email, password, role } = req.body;
+    const { name, email, password } = req.body;
+    const role = ["donor", "requester"].includes(req.body.role) ? req.body.role : "donor";
+
+    if (!name || !email || !password) {
+      return res.status(400).json({ message: "Name, email and password are required" });
+    }
+    if (password.length < 8) {
+      return res.status(400).json({ message: "Password must be at least 8 characters" });
+    }
 
     const existing = await User.findOne({ email });
     if (existing) return res.status(400).json({ message: "Email already registered" });

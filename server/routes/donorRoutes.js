@@ -5,6 +5,6 @@ const { protect } = require("../middleware/authMiddleware");
 const router = express.Router();
 
 router.post("/", protect, createDonorProfile);
-router.get("/", getDonors);
+router.get("/", protect, getDonors);
 
 module.exports = router;
